@@ -48,26 +48,20 @@ function changeCellValue(board,rowIndex,colIndex,changeCellCurrentPlayer){
     board[rowIndex][colIndex] = changeCellCurrentPlayer.mark
 }
 
-function checkWinCondition() {
-    // for(let i = 0;i<rows;i++){
-
-    //     if(board[i].every(cell => cell==='x')
-    //     ||board[i].every(cell => cell==='o')){
-    //         return true
-    //     }
-    //     for(let j = 0; j<columns;j++){
-           
-    //     }
-    // }
+function checkWinCondition(myBoard) {
+  
     
 }
-function checkRowEquality(board,value) {
+// check row match
+
+
+function checkAnyRowEquality(myBoard,expectedValue) {
     let matchingRows = 0
 
-    for(let rowIndex = 0; rowIndex<board.length; rowIndex++){
+    for(let rowIndex = 0; rowIndex<myBoard.length; rowIndex++){
         let isRowEqual = true
-        for(let colIndex = 0; colIndex<board[rowIndex].length;colIndex++){
-         if(board[rowIndex][colIndex] !== value)  {
+        for(let colIndex = 0; colIndex<myBoard[rowIndex].length;colIndex++){
+         if(myBoard[rowIndex][colIndex] !== expectedValue)  {
             isRowEqual = false;
             break
          } 
@@ -79,11 +73,68 @@ function checkRowEquality(board,value) {
     return matchingRows===1
 }
 
-board2 = [['x','x','x'],[0,0,0],[0,0,0]]
+// check column match
+function checkAnyColumnEquality(myBoard,expectedValue){
+    let matchingColumns = 0
+    for(let colIndex = 0; colIndex<myBoard[0].length;colIndex++){
+        let isColumnEqual = true
+        for(let rowIndex = 0;rowIndex<myBoard.length;rowIndex++){
+            if(myBoard[rowIndex][colIndex] !==expectedValue){
+                isColumnEqual = false
+                break
+            }
+        }   
+        if(isColumnEqual){
+            matchingColumns++
+        }
+    }
+    return matchingColumns===1
+}
+
+
+let board2 = [['x', 'x', 'x'], [0, 0, 0], [0, 0, 0]];
+board2 = [[0,'x',0],[0,'x',0],[0,'x',0]]
+
+
+let board3 = [['x', 0, 0], [0, 'x', 0], [0, 0, 'x']];
+let reverseBoard = [[0, 0, 'x'], [0, 'x', 0], ['x', 0, 0]];
+
+function checkAnyDiagonalEquality(myBoard,expectedValue){
+    let matchingDiagonal = 0
+    for(let i = 0;i <myBoard.length;i++){
+        let isDiagonals = true 
+        console.log(`this is  myBoard[${i}][${i}] = ${myBoard[i][i]}`)
+        if(myBoard[i][i]!==expectedValue){
+            isDiagonals = false
+            break
+        }
+        if(isDiagonals){
+            matchingDiagonal++
+        }
+    }
+    console.log('firstLoop',matchingDiagonal)
+    let j = -1
+    for(let i = myBoard.length-1;i>=0;i--){
+        let isDiagonals = true 
+        j++
+        console.log(`this is reverse myBoard[${j}][${i}]  = ${myBoard[j][i]}`)
+        if(myBoard[j][i]!==expectedValue){
+            isDiagonals = false
+            break
+        }
+        if(isDiagonals){
+            matchingDiagonal++
+        }
+    }
+    console.log('secondLoop',matchingDiagonal)
+    return matchingDiagonal===3
+}
+
+
 
 
 // function GameBoard() {
-//     const rows = 3
+//     const rows = 3   
 //     const columns = 3
 //     const board = []
 
