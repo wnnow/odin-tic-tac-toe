@@ -32,13 +32,14 @@ function switchPlayer(){
     currentPlayer = (currentPlayer === player1)?player2:player1;
 }
 //check cell value
-function checkCellValue(board,rowIndex,colIndex,currentPlayer){
+function runGame(board,rowIndex,colIndex,currentPlayer){
+    //check cell value if cell empty(equal 0 run code)
     if(board[rowIndex][colIndex]===0){ 
-        //run code
         changeCellValue(board,rowIndex,colIndex,currentPlayer)
+        if(checkWinCondition(board)){
+            return `${currentPlayer.name}`
+        }
         switchPlayer()
-        getBoard()
-        console.log("🚀 ~ file: script.js:41 ~ checkCellValue ~ getBoard():", getBoard())
     } else {
         return
     }
@@ -50,7 +51,16 @@ function changeCellValue(board,rowIndex,colIndex,changeCellCurrentPlayer){
 
 function checkWinCondition(myBoard) {
   
-    
+    if(checkAnyColumnEquality(myBoard,currentPlayer.mark)
+    ||checkAnyDiagonalEquality(myBoard,currentPlayer.mark)
+    ||checkAnyRowEquality(myBoard,currentPlayer.mark)
+    ) {
+        console.log(`${currentPlayer.name} win`)
+        return true
+    } else {
+        console.log(`Please continue`)
+        return false
+    }
 }
 // check row match
 
@@ -93,17 +103,17 @@ function checkAnyColumnEquality(myBoard,expectedValue){
 
 
 let board2 = [['x', 'x', 'x'], [0, 0, 0], [0, 0, 0]];
-board2 = [[0,'x',0],[0,'x',0],[0,'x',0]]
+let columnsBoard = [[0,'x',0],[0,'x',0],[0,'x',0]]
 
 
-let board3 = [['x', 0, 0], [0, 'x', 0], [0, 0, 'x']];
+let board3 = [['x', 0, 0], [0, 'x', 0], [0, 0, 0]];
 let reverseBoard = [[0, 0, 'x'], [0, 'x', 0], ['x', 0, 0]];
 
 function checkAnyDiagonalEquality(myBoard,expectedValue){
     let matchingDiagonal = 0
     for(let i = 0;i <myBoard.length;i++){
         let isDiagonals = true 
-        console.log(`this is  myBoard[${i}][${i}] = ${myBoard[i][i]}`)
+       
         if(myBoard[i][i]!==expectedValue){
             isDiagonals = false
             break
@@ -112,12 +122,12 @@ function checkAnyDiagonalEquality(myBoard,expectedValue){
             matchingDiagonal++
         }
     }
-    console.log('firstLoop',matchingDiagonal)
+
     let j = -1
     for(let i = myBoard.length-1;i>=0;i--){
         let isDiagonals = true 
         j++
-        console.log(`this is reverse myBoard[${j}][${i}]  = ${myBoard[j][i]}`)
+        
         if(myBoard[j][i]!==expectedValue){
             isDiagonals = false
             break
@@ -126,7 +136,7 @@ function checkAnyDiagonalEquality(myBoard,expectedValue){
             matchingDiagonal++
         }
     }
-    console.log('secondLoop',matchingDiagonal)
+  
     return matchingDiagonal===3
 }
 
