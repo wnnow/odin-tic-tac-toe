@@ -28,9 +28,8 @@ function GameBoard() {
         return {name,mark}
     }
     
-    let player1 = createPlayer('Jo1','x')
-    let player2 = createPlayer('Jane2','o')
-    
+    let player1 = createPlayer('DefaultPlayer1','x')
+    let player2 = createPlayer('DefaultPlayer2','o')
     // switch player
     let currentPlayer = player1
     
@@ -49,7 +48,7 @@ function GameBoard() {
             if(checkWinCondition(board)){
                 return `${currentPlayer.name}`
             }
-            if (checkTie(myBoard)){
+            if (checkTie(board)){
                 isTie = true
                 return isTie
             }
@@ -59,14 +58,14 @@ function GameBoard() {
         }
     }
     //change cell value
-    function changeCellValue(board,rowIndex,colIndex,changeCellCurrentPlayer){
-        board[rowIndex][colIndex] = changeCellCurrentPlayer.mark
+    function changeCellValue(board,rowIndex,colIndex,currentPlayer){
+        board[rowIndex][colIndex] = currentPlayer.mark
     }
     
-    function checkWinCondition(myBoard) {
-        if(checkAnyColumnEquality(myBoard,currentPlayer.mark)
-        ||checkAnyDiagonalEquality(myBoard,currentPlayer.mark)
-        ||checkAnyRowEquality(myBoard,currentPlayer.mark)
+    function checkWinCondition(board) {
+        if(checkAnyColumnEquality(board,currentPlayer.mark)
+        ||checkAnyDiagonalEquality(board,currentPlayer.mark)
+        ||checkAnyRowEquality(board,currentPlayer.mark)
         ) {
             console.log(`${currentPlayer.name} win`)
             return true
@@ -77,13 +76,13 @@ function GameBoard() {
     }
     
     // check row match
-    function checkAnyRowEquality(myBoard,expectedValue) {
+    function checkAnyRowEquality(board,expectedValue) {
         let matchingRows = 0
     
-        for(let rowIndex = 0; rowIndex<myBoard.length; rowIndex++){
+        for(let rowIndex = 0; rowIndex<board.length; rowIndex++){
             let isRowEqual = true
-            for(let colIndex = 0; colIndex<myBoard[rowIndex].length;colIndex++){
-             if(myBoard[rowIndex][colIndex] !== expectedValue)  {
+            for(let colIndex = 0; colIndex<board[rowIndex].length;colIndex++){
+             if(board[rowIndex][colIndex] !== expectedValue)  {
                 isRowEqual = false;
                 break
              } 
@@ -96,13 +95,13 @@ function GameBoard() {
     }
     
     // check column match
-    function checkAnyColumnEquality(myBoard,expectedValue){
+    function checkAnyColumnEquality(board,expectedValue){
         let matchingColumns = 0
     
-        for(let colIndex = 0; colIndex<myBoard[0].length;colIndex++){
+        for(let colIndex = 0; colIndex<board[0].length;colIndex++){
             let isColumnEqual = true
-            for(let rowIndex = 0;rowIndex<myBoard.length;rowIndex++){
-                if(myBoard[rowIndex][colIndex] !==expectedValue){
+            for(let rowIndex = 0;rowIndex<board.length;rowIndex++){
+                if(board[rowIndex][colIndex] !==expectedValue){
                     isColumnEqual = false
                     break
                 }
@@ -115,12 +114,12 @@ function GameBoard() {
     }
     
     // check diagonal match
-    function checkAnyDiagonalEquality(myBoard,expectedValue){
+    function checkAnyDiagonalEquality(board,expectedValue){
         let matchingDiagonal = 0
-        for(let i = 0;i <myBoard.length;i++){
+        for(let i = 0;i <board.length;i++){
             let isDiagonals = true 
            
-            if(myBoard[i][i]!==expectedValue){
+            if(board[i][i]!==expectedValue){
                 isDiagonals = false
                 break
             }
@@ -130,11 +129,11 @@ function GameBoard() {
         }
     
         let j = -1
-        for(let i = myBoard.length-1;i>=0;i--){
+        for(let i = board.length-1;i>=0;i--){
             let isDiagonals = true 
             j++
             
-            if(myBoard[j][i]!==expectedValue){
+            if(board[j][i]!==expectedValue){
                 isDiagonals = false
                 break
             }
@@ -142,15 +141,15 @@ function GameBoard() {
                 matchingDiagonal++
             }
         }
-        return matchingDiagonal===myBoard.length
+        return matchingDiagonal===board.length
     }
     
-    function checkTie (arr){
+    function checkTie (board){
         let isTie = 0
-        for(let i = 0; i<arr.length;i++){ 
-            if(gameBoard.checkWinCondition(arr)) {
+        for(let i = 0; i<board.length;i++){ 
+            if(gameBoard.checkWinCondition(board)) {
                 return isTie === 1 
-            } else if(arr[i].includes(0)){
+            } else if(board[i].includes(0)){
                 isTie = false 
             } else {
                 isTie++
@@ -160,10 +159,10 @@ function GameBoard() {
     }
 
    
-    return {getBoard,createPlayer,runGame,currentPlayer,checkWinCondition,checkTie,checkAnyRowEquality}
+    return {getBoard,createPlayer,runGame}
 })()
 
-
+//test data
 let board2 = [['x', 'x', 'x'], [0, 0, 0], [0, 0, 0]];
 let columnsBoard = [[0,'x',0],[0,'x',0],[0,'x',0]]
 
