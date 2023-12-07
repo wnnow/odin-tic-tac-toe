@@ -1,11 +1,9 @@
 // create board
-
 // create check board cell value func if(value = 0) true
 // create change cell value func 
 // create player1 and player2 (name , mark)
 // create switch player each time func 
 // check win condition
-
 
 let gameBoard = (
 function GameBoard() {
@@ -28,14 +26,38 @@ function GameBoard() {
         return {name,mark}
     }
     
-    let player1 = createPlayer('DefaultPlayer1','x')
-    let player2 = createPlayer('DefaultPlayer2','o')
+    let player1
+    let player2 
+
+    let getPlayer1 = () => player1
+    let getPlayer2 = () => player2
+
+    function assignPlayer1 (name,mark){
+        if(!player1){
+        player1 = createPlayer(name,mark)
+        currentPlayer = player1
+        } else {
+            console.log(`player1 already assign`)
+            return
+        }
+    }
+    function assignPlayer2 (name,mark){
+        if(!player2){
+            player2 = createPlayer(name,mark)
+            } else {
+                console.log(`player2 already assign`)
+                return
+            }
+    }
     // switch player
-    let currentPlayer = player1
-    
+    let currentPlayer 
+
+    let getCurrentPlayer = () => currentPlayer
+
     function switchPlayer(){
         currentPlayer = (currentPlayer === player1)?player2:player1;
     }
+
     //check cell value
     let isTie = false
     function runGame(board,rowIndex,colIndex,currentPlayer){
@@ -50,6 +72,7 @@ function GameBoard() {
             }
             if (checkTie(board)){
                 isTie = true
+                console.log(`Tie`)
                 return isTie
             }
             switchPlayer()
@@ -91,6 +114,7 @@ function GameBoard() {
                 matchingRows++
             }
         }
+       
         return matchingRows===1
     }
     
@@ -110,6 +134,7 @@ function GameBoard() {
                 matchingColumns++
             }
         }
+   
         return matchingColumns===1
     }
     
@@ -141,25 +166,29 @@ function GameBoard() {
                 matchingDiagonal++
             }
         }
+        
+        
         return matchingDiagonal===board.length
     }
     
     function checkTie (board){
         let isTie = 0
         for(let i = 0; i<board.length;i++){ 
-            if(gameBoard.checkWinCondition(board)) {
+            if(checkWinCondition(board)) {
                 return isTie === 1 
             } else if(board[i].includes(0)){
+                console.log(`include 0`)
                 isTie = false 
             } else {
+                console.log(`Tie++`)
                 isTie++
             }
-            return isTie ===1
         }
+        return isTie === board.length
     }
 
    
-    return {getBoard,createPlayer,runGame}
+    return {getBoard,runGame,assignPlayer1,getPlayer1,assignPlayer2,getPlayer2,switchPlayer,getCurrentPlayer,checkTie}
 })()
 
 //test data
@@ -170,3 +199,15 @@ let columnsBoard = [[0,'x',0],[0,'x',0],[0,'x',0]]
 let board3 = [['x', 0, 0], [0, 'x', 0], [0, 0, 0]];
 let reverseBoard = [[0, 0, 'x'], [0, 'x', 0], ['x', 0, 0]];
 let tieBoard = [['o', 'o', 'x'], ['x', 'x', 'o'], ['o', 'x', 'o']]; 
+
+gameBoard.assignPlayer1('Miyuki','x')
+gameBoard.assignPlayer2('Shin','o')
+gameBoard.runGame(gameBoard.getBoard(),1,1,gameBoard.getCurrentPlayer())
+gameBoard.runGame(gameBoard.getBoard(),0,0,gameBoard.getCurrentPlayer())
+gameBoard.runGame(gameBoard.getBoard(),2,0,gameBoard.getCurrentPlayer())
+gameBoard.runGame(gameBoard.getBoard(),0,2,gameBoard.getCurrentPlayer())
+gameBoard.runGame(gameBoard.getBoard(),0,1,gameBoard.getCurrentPlayer())
+gameBoard.runGame(gameBoard.getBoard(),2,1,gameBoard.getCurrentPlayer())
+gameBoard.runGame(gameBoard.getBoard(),1,2,gameBoard.getCurrentPlayer())
+gameBoard.runGame(gameBoard.getBoard(),2,2,gameBoard.getCurrentPlayer())
+gameBoard.runGame(gameBoard.getBoard(),1,0,gameBoard.getCurrentPlayer())
