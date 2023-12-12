@@ -12,7 +12,6 @@ let gameBoard = (function GameBoard() {
   function createBoard() {
     const rows = 3;
     const columns = 3;
-    const board = [];
     const container = document.querySelector(".container");
 
     for (let i = 0; i < rows; i++) {
@@ -43,7 +42,7 @@ let gameBoard = (function GameBoard() {
 
   let player1;
   let player2;
-
+  let currentPlayer;
   let getPlayer1 = () => player1;
   let getPlayer2 = () => player2;
 
@@ -56,6 +55,14 @@ let gameBoard = (function GameBoard() {
       return;
     }
   }
+  const playerContainer = document.querySelector(".player-container");
+  const playerContainerChild = Array.from(playerContainer.children);
+  playerContainerChild.forEach((element) =>
+    element.addEventListener("click", (e) => {
+      console.log(e.target.dataset);
+      assignPlayer1("Default");
+    })
+  );
 
   function assignPlayer2(name, mark) {
     if (!player2) {
@@ -67,7 +74,6 @@ let gameBoard = (function GameBoard() {
   }
 
   // switch player
-  let currentPlayer;
 
   let getCurrentPlayer = () => currentPlayer;
 
@@ -246,14 +252,14 @@ let tieBoard = [
   ["o", "x", "o"],
 ];
 
-gameBoard.assignPlayer1("Miyuki", "x");
-gameBoard.assignPlayer2("Shin", "o");
-gameBoard.runGame(gameBoard.getBoard(), 1, 1, gameBoard.getCurrentPlayer());
-gameBoard.runGame(gameBoard.getBoard(), 0, 0, gameBoard.getCurrentPlayer());
-gameBoard.runGame(gameBoard.getBoard(), 2, 0, gameBoard.getCurrentPlayer());
-gameBoard.runGame(gameBoard.getBoard(), 0, 2, gameBoard.getCurrentPlayer());
-gameBoard.runGame(gameBoard.getBoard(), 0, 1, gameBoard.getCurrentPlayer());
-gameBoard.runGame(gameBoard.getBoard(), 2, 1, gameBoard.getCurrentPlayer());
-gameBoard.runGame(gameBoard.getBoard(), 1, 2, gameBoard.getCurrentPlayer());
-gameBoard.runGame(gameBoard.getBoard(), 2, 2, gameBoard.getCurrentPlayer());
-gameBoard.runGame(gameBoard.getBoard(), 1, 0, gameBoard.getCurrentPlayer());
+// gameBoard.assignPlayer1("Miyuki", "x");
+// gameBoard.assignPlayer2("Shin", "o");
+// gameBoard.runGame(gameBoard.getBoard(), 1, 1, gameBoard.getCurrentPlayer());
+// gameBoard.runGame(gameBoard.getBoard(), 0, 0, gameBoard.getCurrentPlayer());
+// gameBoard.runGame(gameBoard.getBoard(), 2, 0, gameBoard.getCurrentPlayer());
+// gameBoard.runGame(gameBoard.getBoard(), 0, 2, gameBoard.getCurrentPlayer());
+// gameBoard.runGame(gameBoard.getBoard(), 0, 1, gameBoard.getCurrentPlayer());
+// gameBoard.runGame(gameBoard.getBoard(), 2, 1, gameBoard.getCurrentPlayer());
+// gameBoard.runGame(gameBoard.getBoard(), 1, 2, gameBoard.getCurrentPlayer());
+// gameBoard.runGame(gameBoard.getBoard(), 2, 2, gameBoard.getCurrentPlayer());
+// gameBoard.runGame(gameBoard.getBoard(), 1, 0, gameBoard.getCurrentPlayer());
