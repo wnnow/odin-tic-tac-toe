@@ -78,7 +78,7 @@ textarea {
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 50px;
+  margin-bottom: 20px;
   position: relative;
 }
 
@@ -92,21 +92,12 @@ textarea {
   padding: 8px 16px;
   border-radius: 10px;
   font-size: 1.25rem;
+  /* position: relative; */
 }
 
 .player-name {
   width: 100%;
   font-size: 1rem;
-}
-
-.player-container::after {
-  content: "Please input Player name";
-  position: absolute;
-  top: 125%;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 0.75rem;
-  color: #666;
 }
 
 .form-container {
@@ -169,4 +160,27 @@ div.player-name-input > input:focus {
 
 .form-section {
   margin-bottom: 30px;
+}
+
+div.x-mark::before,
+div.o-mark::before {
+  position: absolute;
+  top: -30%;
+  color: #666;
+  font-size: 0.75rem;
+}
+div.x-mark::before {
+  content: "Player 1";
+}
+div.o-mark::before {
+  content: "Player 2";
+}
+
+.player-turn-announce {
+  width: 200px;
+  margin: 0 auto;
+  font-size: 1rem;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #666;
 }

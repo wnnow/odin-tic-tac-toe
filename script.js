@@ -8,7 +8,9 @@
 let gameBoard = (function GameBoard() {
   // create board
   const board = [];
-
+  const confirmPlayerNameBtn = document.querySelector(
+    "button#confirm_player_name"
+  );
   function createBoard() {
     const rows = 3;
     const columns = 3;
@@ -82,27 +84,29 @@ let gameBoard = (function GameBoard() {
     const player1Name = document.querySelector("#player1_score_name");
     const player2Name = document.querySelector("#player2_score_name");
 
+    const formSection = document.querySelector(".form-section");
+
     if (player1Input.value === "" || player2Input.value === "") {
-      return `Please input please name`;
+      return `Please input player name`;
     } else {
-      console.log(player1Input.value);
-      console.log(player2Input.value);
       assignPlayer1(player1Input.value, "x");
       assignPlayer2(player2Input.value, "o");
       player1Name.textContent = player1Input.value;
       player2Name.textContent = player2Input.value;
-      console.log(`pass`);
+      formSection.style.display = "none";
+      announcePlayerTurn(currentPlayer.mark);
     }
   }
-
-  const confirmPlayerNameBtn = document.querySelector(
-    "button#confirm_player_name"
-  );
 
   confirmPlayerNameBtn.addEventListener("click", (e) => {
     e.preventDefault;
     changePlayerName();
   });
+
+  const turnText = document.querySelector(".player-turn-announce");
+  function announcePlayerTurn(text) {
+    turnText.textContent = `${text} ' turn`;
+  }
 
   // switch player
 
