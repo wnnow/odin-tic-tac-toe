@@ -55,8 +55,10 @@ let gameBoard = (function GameBoard() {
       return;
     }
   }
+
   const playerContainer = document.querySelector(".player-container");
   const playerContainerChild = Array.from(playerContainer.children);
+
   playerContainerChild.forEach((element) =>
     element.addEventListener("click", (e) => {
       console.log(e.target.dataset);
@@ -72,6 +74,35 @@ let gameBoard = (function GameBoard() {
       return;
     }
   }
+
+  function changePlayerName() {
+    const player1Input = document.querySelector("input#player1_name");
+    const player2Input = document.querySelector("input#player2_name");
+
+    const player1Name = document.querySelector("#player1_score_name");
+    const player2Name = document.querySelector("#player2_score_name");
+
+    if (player1Input.value === "" || player2Input.value === "") {
+      return `Please input please name`;
+    } else {
+      console.log(player1Input.value);
+      console.log(player2Input.value);
+      assignPlayer1(player1Input.value, "x");
+      assignPlayer2(player2Input.value, "o");
+      player1Name.textContent = player1Input.value;
+      player2Name.textContent = player2Input.value;
+      console.log(`pass`);
+    }
+  }
+
+  const confirmPlayerNameBtn = document.querySelector(
+    "button#confirm_player_name"
+  );
+
+  confirmPlayerNameBtn.addEventListener("click", (e) => {
+    e.preventDefault;
+    changePlayerName();
+  });
 
   // switch player
 

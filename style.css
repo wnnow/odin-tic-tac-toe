@@ -92,7 +92,6 @@ textarea {
   padding: 8px 16px;
   border-radius: 10px;
   font-size: 1.25rem;
-  cursor: pointer;
 }
 
 .player-name {
@@ -139,7 +138,7 @@ label[for="player2_name"]::before {
 
 div.player-name-input > input {
   width: 20dvh;
-  border: 1px solid #666;
+  border: 1px solid black;
   border-radius: 5px;
   padding: 4px 8px;
 }
@@ -155,7 +154,17 @@ div.player-name-input > input:focus {
 }
 
 .form-button-container > button {
+  display: inline-block;
+  text-decoration: none;
   width: 200px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 25px;
+  border: 1px solid #666;
+  background-color: rgb(243, 243, 243);
+}
+.form-button-container > button:hover {
+  background-color: #b1b1b1;
 }
 
 .form-section {

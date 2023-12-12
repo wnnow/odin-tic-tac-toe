@@ -15,28 +15,32 @@
     <div class="header">TIC TAC TOE</div>
 
     <div class="form-section">
-      <div class="form-container">
-        <div class="player-name-input">
-          <label for="player1_name"></label>
-          <input type="text" id="player1_name" />
+      <form action="#">
+        <div class="form-container">
+          <div class="player-name-input">
+            <label for="player1_name"></label>
+            <input type="text" id="player1_name" required maxlength="16" />
+          </div>
+          <div class="player-name-input">
+            <label for="player2_name"></label>
+            <input type="text" id="player2_name" required maxlength="16" />
+          </div>
         </div>
-        <div class="player-name-input">
-          <label for="player2_name"></label>
-          <input type="text" id="player2_name" />
+        <div class="form-button-container">
+          <button type="submit" id="confirm_player_name">
+            Confirm Player name
+          </button>
         </div>
-      </div>
-      <div class="form-button-container">
-        <button type="submit">Confirm Player name</button>
-      </div>
+      </form>
     </div>
     <div class="player-container">
       <div class="x-mark" data-mark="x">
-        <div class="player-name">Player 1</div>
+        <div class="player-name" id="player1_score_name">Player 1</div>
         <div>x</div>
         <div id="x_score">-</div>
       </div>
       <div class="o-mark" data-mark="o">
-        <div class="player-name">Player 2</div>
+        <div class="player-name" id="player2_score_name">Player 2</div>
         <div>o</div>
         <div id="x_score">-</div>
       </div>
