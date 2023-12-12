@@ -26,6 +26,7 @@ let gameBoard = (function GameBoard() {
         cellElement.setAttribute("data-col", j);
         // cellElement.textContent = "close";
         cellElement.classList.add("cell", "material-symbols-outlined");
+
         rowElement.appendChild(cellElement);
         board[i].push(0);
       }
@@ -58,15 +59,15 @@ let gameBoard = (function GameBoard() {
     }
   }
 
-  const playerContainer = document.querySelector(".player-container");
-  const playerContainerChild = Array.from(playerContainer.children);
+  // const playerContainer = document.querySelector(".player-container");
+  // const playerContainerChild = Array.from(playerContainer.children);
 
-  playerContainerChild.forEach((element) =>
-    element.addEventListener("click", (e) => {
-      console.log(e.target.dataset);
-      assignPlayer1("Default");
-    })
-  );
+  // playerContainerChild.forEach((element) =>
+  //   element.addEventListener("click", (e) => {
+  //     console.log(e.target.dataset);
+  //     assignPlayer1("Default");
+  //   })
+  // );
 
   function assignPlayer2(name, mark) {
     if (!player2) {
@@ -80,10 +81,8 @@ let gameBoard = (function GameBoard() {
   function changePlayerName() {
     const player1Input = document.querySelector("input#player1_name");
     const player2Input = document.querySelector("input#player2_name");
-
     const player1Name = document.querySelector("#player1_score_name");
     const player2Name = document.querySelector("#player2_score_name");
-
     const formSection = document.querySelector(".form-section");
 
     if (player1Input.value === "" || player2Input.value === "") {
@@ -104,6 +103,7 @@ let gameBoard = (function GameBoard() {
   });
 
   const turnText = document.querySelector(".player-turn-announce");
+
   function announcePlayerTurn(text) {
     turnText.textContent = `${text} ' turn`;
   }
@@ -114,17 +114,19 @@ let gameBoard = (function GameBoard() {
 
   function switchPlayer() {
     currentPlayer = currentPlayer === player1 ? player2 : player1;
+    announcePlayerTurn(currentPlayer.mark);
   }
 
   //check cell value
   let isTie = false;
-  function runGame(board, rowIndex, colIndex, currentPlayer) {
+
+  function runGame(board, rowIndex, colIndex, currentPlayer, target) {
     if (checkWinCondition(board)) {
       return;
     }
     //check cell value if cell empty(equal 0 run code)
     if (board[rowIndex][colIndex] === 0) {
-      changeCellValue(board, rowIndex, colIndex, currentPlayer);
+      changeCellValue(board, rowIndex, colIndex, currentPlayer, target);
       if (checkWinCondition(board)) {
         return `${currentPlayer.name}`;
       }
@@ -139,12 +141,34 @@ let gameBoard = (function GameBoard() {
     }
   }
 
+  Array.from(document.querySelectorAll(".cell")).forEach((cell) =>
+    cell.addEventListener("click", (e) => {
+      runGame(
+        gameBoard.getBoard(),
+        e.target.dataset.row,
+        e.target.dataset.col,
+        gameBoard.getCurrentPlayer(),
+        e
+      );
+    })
+  );
+
   //change cell value
-  function changeCellValue(board, rowIndex, colIndex, currentPlayer) {
+  function changeCellValue(board, rowIndex, colIndex, currentPlayer, target) {
+    let cellText;
+    if (currentPlayer.mark === "x") {
+      // cellText = "close";
+      target.target.textContent = "close";
+    } else {
+      // cellText = "circle";
+      target.target.textContent = "circle";
+    }
+    // board[rowIndex][colIndex] = currentPlayer.mark;
     board[rowIndex][colIndex] = currentPlayer.mark;
   }
 
   function checkWinCondition(board) {
+    console.log("checkwin");
     if (
       checkAnyColumnEquality(board, currentPlayer.mark) ||
       checkAnyDiagonalEquality(board, currentPlayer.mark) ||
@@ -203,7 +227,6 @@ let gameBoard = (function GameBoard() {
     let matchingDiagonal = 0;
     for (let i = 0; i < board.length; i++) {
       let isDiagonals = true;
-
       if (board[i][i] !== expectedValue) {
         isDiagonals = false;
         break;
@@ -212,7 +235,6 @@ let gameBoard = (function GameBoard() {
         matchingDiagonal++;
       }
     }
-
     let j = -1;
     for (let i = board.length - 1; i >= 0; i--) {
       let isDiagonals = true;
@@ -256,6 +278,9 @@ let gameBoard = (function GameBoard() {
     switchPlayer,
     getCurrentPlayer,
     checkTie,
+    checkAnyRowEquality,
+    checkAnyDiagonalEquality,
+    checkAnyColumnEquality,
   };
 })();
 
@@ -285,6 +310,11 @@ let tieBoard = [
   ["o", "o", "x"],
   ["x", "x", "o"],
   ["o", "x", "o"],
+];
+let reverseBoard2 = [
+  ["x", "o", "x"],
+  ["o", "x", "o"],
+  ["x", "o", "x"],
 ];
 
 // gameBoard.assignPlayer1("Miyuki", "x");

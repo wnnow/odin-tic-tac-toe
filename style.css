@@ -144,17 +144,19 @@ div.player-name-input > input:focus {
   align-items: center;
 }
 
-.form-button-container > button {
+.form-button-container > button,
+#clear_board {
   display: inline-block;
   text-decoration: none;
   width: 200px;
   padding: 8px 16px;
   border: none;
-  border-radius: 25px;
+  border-radius: 20px;
   border: 1px solid #666;
   background-color: rgb(243, 243, 243);
 }
-.form-button-container > button:hover {
+.form-button-container > button:hover,
+#clear_board:hover {
   background-color: #b1b1b1;
 }
 
@@ -177,10 +179,17 @@ div.o-mark::before {
 }
 
 .player-turn-announce {
-  width: 200px;
+  width: 250px;
   margin: 0 auto;
   font-size: 1rem;
   margin-bottom: 20px;
   text-align: center;
   color: #666;
+}
+
+#clear_board {
+  display: block;
+  width: 100px;
+  margin: 0 auto;
+  margin-top: 25px;
 }
