@@ -116,30 +116,6 @@ let gameBoard = (function GameBoard() {
     announcePlayerTurn(currentPlayer.mark);
   }
 
-  //check cell value
-  let isTie = false;
-
-  function runGame(board, rowIndex, colIndex, currentPlayer, target) {
-    if (checkWinCondition(board)) {
-      return;
-    }
-    //check cell value if cell empty(equal 0 run code)
-    if (board[rowIndex][colIndex] === 0) {
-      changeCellValue(board, rowIndex, colIndex, currentPlayer, target);
-      if (checkWinCondition(board)) {
-        return `${currentPlayer.name}`;
-      }
-      if (checkTie(board)) {
-        isTie = true;
-        turnText.textContent = "Tie!";
-        return isTie;
-      }
-      switchPlayer();
-    } else {
-      return;
-    }
-  }
-
   function addCellClickEvent() {
     Array.from(document.querySelectorAll(".cell")).forEach((cell) =>
       cell.addEventListener("click", (e) => {
@@ -178,6 +154,20 @@ let gameBoard = (function GameBoard() {
     } else {
       console.log(`Please continue`);
       return false;
+    }
+  }
+  let player1Score = 0;
+  let player2Score = 0;
+
+  function updatePlayerScore(playerMark) {
+    const player1ScoreElement = document.querySelector("#x_score");
+    const player2ScoreElement = document.querySelector("#o_score");
+    if (playerMark === "x") {
+      player1Score++;
+      player1ScoreElement.textContent = player1Score;
+    } else if (playerMark === "o") {
+      player2Score++;
+      player2ScoreElement.textContent = player2Score;
     }
   }
 
@@ -272,7 +262,30 @@ let gameBoard = (function GameBoard() {
     }
     return isTie === board.length;
   }
+  //check cell value
+  let isTie = false;
 
+  function runGame(board, rowIndex, colIndex, currentPlayer, target) {
+    if (checkWinCondition(board)) {
+      return;
+    }
+    //check cell value if cell empty(equal 0 run code)
+    if (board[rowIndex][colIndex] === 0) {
+      changeCellValue(board, rowIndex, colIndex, currentPlayer, target);
+      if (checkWinCondition(board)) {
+        updatePlayerScore(currentPlayer.mark);
+        return `${currentPlayer.name}`;
+      }
+      if (checkTie(board)) {
+        isTie = true;
+        turnText.textContent = "Tie!";
+        return isTie;
+      }
+      switchPlayer();
+    } else {
+      return;
+    }
+  }
   return {
     getBoard,
     runGame,
