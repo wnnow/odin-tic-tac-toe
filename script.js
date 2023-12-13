@@ -1,10 +1,3 @@
-// create board
-// create check board cell value func if(value = 0) true
-// create change cell value func
-// create player1 and player2 (name , mark)
-// create switch player each time func
-// check win condition
-
 let gameBoard = (function GameBoard() {
   // create board
   const board = [];
@@ -24,9 +17,7 @@ let gameBoard = (function GameBoard() {
         const cellElement = document.createElement("span");
         cellElement.setAttribute("data-row", i);
         cellElement.setAttribute("data-col", j);
-        // cellElement.textContent = "close";
         cellElement.classList.add("cell", "material-symbols-outlined");
-
         rowElement.appendChild(cellElement);
         board[i].push(0);
       }
@@ -36,6 +27,24 @@ let gameBoard = (function GameBoard() {
   createBoard();
 
   const getBoard = () => board;
+
+  //clear board
+  function clearBoard() {
+    const container = document.querySelector(".container");
+    while (container.firstChild) {
+      container.removeChild(container.firstChild);
+    }
+  }
+
+  const restartButton = document.querySelector("#clear_board");
+
+  restartButton.addEventListener("click", () => {
+    clearBoard();
+    createBoard();
+    addCellClickEvent();
+    currentPlayer = player1;
+    announcePlayerTurn(currentPlayer.mark);
+  });
 
   //create player
 
@@ -58,16 +67,6 @@ let gameBoard = (function GameBoard() {
       return;
     }
   }
-
-  // const playerContainer = document.querySelector(".player-container");
-  // const playerContainerChild = Array.from(playerContainer.children);
-
-  // playerContainerChild.forEach((element) =>
-  //   element.addEventListener("click", (e) => {
-  //     console.log(e.target.dataset);
-  //     assignPlayer1("Default");
-  //   })
-  // );
 
   function assignPlayer2(name, mark) {
     if (!player2) {
@@ -132,7 +131,7 @@ let gameBoard = (function GameBoard() {
       }
       if (checkTie(board)) {
         isTie = true;
-        console.log(`Tie`);
+        turnText.textContent = "Tie!";
         return isTie;
       }
       switchPlayer();
@@ -141,29 +140,29 @@ let gameBoard = (function GameBoard() {
     }
   }
 
-  Array.from(document.querySelectorAll(".cell")).forEach((cell) =>
-    cell.addEventListener("click", (e) => {
-      runGame(
-        gameBoard.getBoard(),
-        e.target.dataset.row,
-        e.target.dataset.col,
-        gameBoard.getCurrentPlayer(),
-        e
-      );
-    })
-  );
+  function addCellClickEvent() {
+    Array.from(document.querySelectorAll(".cell")).forEach((cell) =>
+      cell.addEventListener("click", (e) => {
+        runGame(
+          gameBoard.getBoard(),
+          e.target.dataset.row,
+          e.target.dataset.col,
+          gameBoard.getCurrentPlayer(),
+          e
+        );
+      })
+    );
+  }
+
+  addCellClickEvent();
 
   //change cell value
   function changeCellValue(board, rowIndex, colIndex, currentPlayer, target) {
-    let cellText;
     if (currentPlayer.mark === "x") {
-      // cellText = "close";
       target.target.textContent = "close";
     } else {
-      // cellText = "circle";
       target.target.textContent = "circle";
     }
-    // board[rowIndex][colIndex] = currentPlayer.mark;
     board[rowIndex][colIndex] = currentPlayer.mark;
   }
 
@@ -174,7 +173,7 @@ let gameBoard = (function GameBoard() {
       checkAnyDiagonalEquality(board, currentPlayer.mark) ||
       checkAnyRowEquality(board, currentPlayer.mark)
     ) {
-      console.log(`${currentPlayer.name} win`);
+      turnText.textContent = `${currentPlayer.name} win!`;
       return true;
     } else {
       console.log(`Please continue`);
@@ -205,7 +204,6 @@ let gameBoard = (function GameBoard() {
   // check column match
   function checkAnyColumnEquality(board, expectedValue) {
     let matchingColumns = 0;
-
     for (let colIndex = 0; colIndex < board[0].length; colIndex++) {
       let isColumnEqual = true;
       for (let rowIndex = 0; rowIndex < board.length; rowIndex++) {
@@ -224,7 +222,8 @@ let gameBoard = (function GameBoard() {
 
   // check diagonal match
   function checkAnyDiagonalEquality(board, expectedValue) {
-    let matchingDiagonal = 0;
+    let matchingDiagonalForward = 0;
+    let matchingDiagonalReverse = 0;
     for (let i = 0; i < board.length; i++) {
       let isDiagonals = true;
       if (board[i][i] !== expectedValue) {
@@ -232,7 +231,7 @@ let gameBoard = (function GameBoard() {
         break;
       }
       if (isDiagonals) {
-        matchingDiagonal++;
+        matchingDiagonalForward++;
       }
     }
     let j = -1;
@@ -245,11 +244,17 @@ let gameBoard = (function GameBoard() {
         break;
       }
       if (isDiagonals) {
-        matchingDiagonal++;
+        matchingDiagonalReverse++;
       }
     }
-
-    return matchingDiagonal === board.length;
+    if (
+      matchingDiagonalForward === board.length ||
+      matchingDiagonalReverse === board.length
+    ) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   function checkTie(board) {
@@ -277,54 +282,5 @@ let gameBoard = (function GameBoard() {
     getPlayer2,
     switchPlayer,
     getCurrentPlayer,
-    checkTie,
-    checkAnyRowEquality,
-    checkAnyDiagonalEquality,
-    checkAnyColumnEquality,
   };
 })();
-
-//test data
-let board2 = [
-  ["x", "x", "x"],
-  [0, 0, 0],
-  [0, 0, 0],
-];
-let columnsBoard = [
-  [0, "x", 0],
-  [0, "x", 0],
-  [0, "x", 0],
-];
-
-let board3 = [
-  ["x", 0, 0],
-  [0, "x", 0],
-  [0, 0, 0],
-];
-let reverseBoard = [
-  [0, 0, "x"],
-  [0, "x", 0],
-  ["x", 0, 0],
-];
-let tieBoard = [
-  ["o", "o", "x"],
-  ["x", "x", "o"],
-  ["o", "x", "o"],
-];
-let reverseBoard2 = [
-  ["x", "o", "x"],
-  ["o", "x", "o"],
-  ["x", "o", "x"],
-];
-
-// gameBoard.assignPlayer1("Miyuki", "x");
-// gameBoard.assignPlayer2("Shin", "o");
-// gameBoard.runGame(gameBoard.getBoard(), 1, 1, gameBoard.getCurrentPlayer());
-// gameBoard.runGame(gameBoard.getBoard(), 0, 0, gameBoard.getCurrentPlayer());
-// gameBoard.runGame(gameBoard.getBoard(), 2, 0, gameBoard.getCurrentPlayer());
-// gameBoard.runGame(gameBoard.getBoard(), 0, 2, gameBoard.getCurrentPlayer());
-// gameBoard.runGame(gameBoard.getBoard(), 0, 1, gameBoard.getCurrentPlayer());
-// gameBoard.runGame(gameBoard.getBoard(), 2, 1, gameBoard.getCurrentPlayer());
-// gameBoard.runGame(gameBoard.getBoard(), 1, 2, gameBoard.getCurrentPlayer());
-// gameBoard.runGame(gameBoard.getBoard(), 2, 2, gameBoard.getCurrentPlayer());
-// gameBoard.runGame(gameBoard.getBoard(), 1, 0, gameBoard.getCurrentPlayer());
