@@ -171,6 +171,7 @@ let gameBoard = (function GameBoard() {
     }
   }
 
+  const matchingCellArr = [];
   // check row match
   function checkAnyRowEquality(board, expectedValue) {
     let matchingRows = 0;
@@ -182,13 +183,17 @@ let gameBoard = (function GameBoard() {
           isRowEqual = false;
           break;
         }
+        matchingCellArr[colIndex] = [rowIndex, colIndex];
       }
       if (isRowEqual) {
         matchingRows++;
       }
     }
-
-    return matchingRows === 1;
+    if (matchingRows === 1) {
+      return true;
+    }
+    matchingCellArr.splice(0, matchingCellArr.length);
+    return false;
   }
 
   // check column match
@@ -201,19 +206,25 @@ let gameBoard = (function GameBoard() {
           isColumnEqual = false;
           break;
         }
+        matchingCellArr[rowIndex] = [rowIndex, colIndex];
       }
       if (isColumnEqual) {
         matchingColumns++;
       }
     }
 
-    return matchingColumns === 1;
+    if (matchingColumns === 1) {
+      return true;
+    }
+    matchingCellArr.splice(0, matchingCellArr.length);
+    return false;
   }
 
   // check diagonal match
   function checkAnyDiagonalEquality(board, expectedValue) {
     let matchingDiagonalForward = 0;
-    let matchingDiagonalReverse = 0;
+    let matchingDiagonalBackward = 0;
+
     for (let i = 0; i < board.length; i++) {
       let isDiagonals = true;
       if (board[i][i] !== expectedValue) {
@@ -221,9 +232,15 @@ let gameBoard = (function GameBoard() {
         break;
       }
       if (isDiagonals) {
+        matchingCellArr[i] = [i, i];
         matchingDiagonalForward++;
       }
     }
+    if (matchingDiagonalForward === board.length) {
+      return true;
+    }
+    matchingCellArr.splice(0, matchingCellArr.length);
+
     let j = -1;
     for (let i = board.length - 1; i >= 0; i--) {
       let isDiagonals = true;
@@ -234,19 +251,17 @@ let gameBoard = (function GameBoard() {
         break;
       }
       if (isDiagonals) {
-        matchingDiagonalReverse++;
+        matchingCellArr[j] = [j, i];
+        matchingDiagonalBackward++;
       }
     }
-    if (
-      matchingDiagonalForward === board.length ||
-      matchingDiagonalReverse === board.length
-    ) {
+    if (matchingDiagonalBackward === board.length) {
       return true;
     } else {
+      matchingCellArr.splice(0, matchingCellArr.length);
       return false;
     }
   }
-
   function checkTie(board) {
     let isTie = 0;
     for (let i = 0; i < board.length; i++) {
@@ -295,5 +310,6 @@ let gameBoard = (function GameBoard() {
     getPlayer2,
     switchPlayer,
     getCurrentPlayer,
+    matchingCellArr,
   };
 })();
