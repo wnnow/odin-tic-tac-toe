@@ -42,7 +42,7 @@ let gameBoard = (function GameBoard() {
     clearBoard();
     createBoard();
     addCellClickEvent();
-    currentPlayer = player1;
+    switchPlayer();
     announcePlayerTurn(currentPlayer.mark);
   });
 
@@ -262,6 +262,8 @@ let gameBoard = (function GameBoard() {
       return false;
     }
   }
+
+  //check Tie
   function checkTie(board) {
     let isTie = 0;
     for (let i = 0; i < board.length; i++) {
@@ -277,6 +279,25 @@ let gameBoard = (function GameBoard() {
     }
     return isTie === board.length;
   }
+
+  function updateWinnerCellColor() {
+    Array.from(document.querySelectorAll(".cell")).forEach((cell) => {
+      for (let i = 0; i < gameBoard.matchingCellArr.length; i++) {
+        let tempCell = [+cell.dataset.row, +cell.dataset.col];
+        if (
+          gameBoard.matchingCellArr.some(
+            (subArray) =>
+              subArray.length === tempCell.length &&
+              subArray.every((value, index) => value === tempCell[index])
+          )
+        ) {
+          cell.style.backgroundColor = "salmon";
+          cell.style.color = "white";
+        }
+      }
+    });
+  }
+
   //check cell value
   let isTie = false;
 
@@ -289,6 +310,7 @@ let gameBoard = (function GameBoard() {
       changeCellValue(board, rowIndex, colIndex, currentPlayer, target);
       if (checkWinCondition(board)) {
         updatePlayerScore(currentPlayer.mark);
+        updateWinnerCellColor();
         return `${currentPlayer.name}`;
       }
       if (checkTie(board)) {

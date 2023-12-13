@@ -84,7 +84,7 @@ textarea {
 
 .x-mark,
 .o-mark {
-  width: 20dvh;
+  width: 150px;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
@@ -128,7 +128,7 @@ label[for="player2_name"]::before {
 }
 
 div.player-name-input > input {
-  width: 20dvh;
+  width: 150px;
   border: 1px solid black;
   border-radius: 5px;
   padding: 4px 8px;
